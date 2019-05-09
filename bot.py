@@ -4,10 +4,8 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='>', description='Yoshi Bot')
 
-auth = ''
 with open('auth.txt') as file:
-    line = file.readline()
-    auth = line[:-1]
+    auth = file.readline().strip(' \n\r')
 
 @bot.command()
 async def ping(ctx):
