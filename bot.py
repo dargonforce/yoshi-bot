@@ -15,7 +15,7 @@ async def ping(ctx):
 
 @bot.command()
 async def yoshi(ctx):
-	await ctx.send('https://i.imgur.com/kW80dMz.jpg')
+	await ctx.send('https://i.imgur.com/v1K2rxK.png')
 
 print('running...')
 bot.run(auth)
