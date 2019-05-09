@@ -2,7 +2,7 @@
 import discord
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='>')
+bot = commands.Bot(command_prefix='>', description='Yoshi Bot')
 
 auth = ''
 with open('auth.txt') as file:
@@ -16,6 +16,14 @@ async def ping(ctx):
 @bot.command()
 async def yoshi(ctx):
 	await ctx.send('https://i.imgur.com/v1K2rxK.png')
+
+@bot.command()
+async def tfw(ctx):
+	await ctx.send('https://i.imgur.com/02VZNGr.jpg')
+
+@bot.command()
+async def tfwnogf(ctx):
+	await ctx.send('https://i.imgur.com/xarhxj4.jpg')
 
 print('running...')
 bot.run(auth)
