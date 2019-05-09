@@ -6,16 +6,16 @@ bot = commands.Bot(command_prefix='>', description='Yoshi Bot')
 
 auth = ''
 with open('auth.txt') as file:
-	line = file.readline()
-	auth = line
+    line = file.readline()
+    auth = line[:-1]
 
 @bot.command()
 async def ping(ctx):
-	await ctx.send('pong')
+    await ctx.send('pong')
 
 @bot.command()
 async def yoshi(ctx):
-	await ctx.send('https://i.imgur.com/v1K2rxK.png')
+    await ctx.send('https://i.imgur.com/v1K2rxK.png')
 
 @bot.command()
 async def tfw(ctx):
