@@ -16,13 +16,11 @@ class BotClient(discord.Client):
 
 	async def on_message(self, message):
 		if message.author != self.user:
-			if message.content == 'ping':
-				await message.channel.send('pong')
-			if 'yoshi' in message.content:
+			if 'yoshi' in message.content.lower():
 				await message.channel.send(strings['yoshi'])
-			elif message.content == '>tfwnogf':
+			elif message.content.lower() == '>tfwnogf':
 				await message.channel.send(strings['tfwnogf'])
-			elif message.content.startswith('>tfw'):
+			elif message.content.lower().startswith('>tfw'):
 				await message.channel.send(strings['tfw'])
 
 client = BotClient()
