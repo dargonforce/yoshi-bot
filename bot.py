@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
 import discord
-from discord.ext import commands
 
-bot = commands.Bot(command_prefix='>', description='Yoshi Bot')
+with open('strings.txt') as file:
+	strings = {}
+	for line in  file:
+		key, value = line.partition('=')[::2]
+		strings[key.strip()] = value
 
 with open('auth.txt') as file:
     auth = file.readline().strip(' \n\r')
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+class BotClient(discord.Client):
+	async def on_ready(self):
+		print('Logged on as', self.user)
 
-@bot.command()
-async def yoshi(ctx):
-    await ctx.send('https://i.imgur.com/v1K2rxK.png')
+	async def on_message(self, message):
+		if message.author != self.user:
+			if message.content == 'ping':
+				await message.channel.send('pong')
+			if 'yoshi' in message.content:
+				await message.channel.send(strings['yoshi'])
+			elif message.content == '>tfwnogf':
+				await message.channel.send(strings['tfwnogf'])
+			elif message.content.startswith('>tfw'):
+				await message.channel.send(strings['tfw'])
 
-@bot.command()
-async def tfw(ctx):
-	await ctx.send('https://i.imgur.com/02VZNGr.jpg')
-
-@bot.command()
-async def tfwnogf(ctx):
-	await ctx.send('https://i.imgur.com/xarhxj4.jpg')
-
-print('running...')
-bot.run(auth)
+client = BotClient()
+client.run(auth)
