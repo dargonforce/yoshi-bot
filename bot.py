@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import discord
-import threading
 
 class And(object):
     def __init__(self, lhs, rhs):
