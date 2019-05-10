@@ -1,3 +1,5 @@
+from typing import Callable
+
 class Contains(object):
     def __init__(self, txt: str, ignore_case: bool = True):
         self.text = txt
@@ -32,19 +34,19 @@ class StartsWith(object):
         return string.startswith(self.text)
 
 class And(object):
-    def __init__(self, *params):
+    def __init__(self, *params: Callable[[str], bool]):
     	self.params = params
     def __call__(self, string: str) -> bool:
     	return all(map(lambda x: x(string), self.params))
 
 class Or(object):
-    def __init__(self, *params):
+    def __init__(self, *params: Callable[[str], bool]):
     	self.params = params
     def __call__(self, string: str) -> bool:
     	return any(map(lambda x: x(string), self.params))
 
 class Not(object):
-    def __init__(self, pred):
+    def __init__(self, pred: Callable[[str], bool]):
         self.pred = pred
     def __call__(self, string: str) -> bool:
         return not self.pred(string)
