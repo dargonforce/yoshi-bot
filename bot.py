@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 import discord
 import markopy.marko
-from functor import Contains, StartsWith, And, Not
+from functor import Contains, StartsWith, And, Not, Equals
+from action import SendResponse, MarkovGenerator
 
-class SendResponse(object):
-    def __init__(self, rspns: str):
-        self.response = rspns
-    async def __call__(self, message: discord.Message):
-        await message.channel.send(self.response)
+try:
+    with open('auth.txt', mode='r') as file:
+        auth = file.readline().strip(' \n\r')
+except FileNotFoundError:
+    print('auth.txt not found')
+    exit()
 
-with open('strings.txt') as file:
+with open('strings.txt', 'r') as file:
     strings = {}
     for line in  file:
         key, value = line.partition('=')[::2]
         strings[key.strip()] = value
-
-with open('auth.txt') as file:
-    auth = file.readline().strip(' \n\r')
-
 commands = [
     (Contains('yoshi'), SendResponse(strings['yoshi'])),
     (Contains('uwu'), SendResponse(strings['uwu'])),
     (And(StartsWith('>tfw'), Not(StartsWith('>tfwnogf'))), SendResponse(strings['tfw'])),
-    (StartsWith('>tfwnogf'), SendResponse(strings['tfwnogf']))
+    (StartsWith('>tfwnogf'), SendResponse(strings['tfwnogf'])),
+    (Equals('turn that poop'), SendResponse('into wine')),
+    (Equals('>sophistry'), MarkovGenerator('republic.txt'))
 ]
 
 class BotClient(discord.Client):

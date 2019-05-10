@@ -9,6 +9,17 @@ class Contains(object):
             string = string.lower()
         return self.text in string
 
+class Equals(object):
+    def __init__(self, text: str, ignore_case: bool = True):
+        self.text = text
+        if ignore_case:
+            self.text = self.text.lower()
+        self.ignore_case = ignore_case
+    def __call__(self, string: str) -> bool:
+        if self.ignore_case:
+            string = string.lower()
+        return string == self.text
+
 class StartsWith(object):
     def __init__(self, txt: str, ignore_case: bool = True):
         self.text = txt
