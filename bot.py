@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import discord
+import auth
 import markopy.marko
 from typing import Callable, Awaitable
 from functor import Contains, StartsWith, And, Not, Equals
@@ -22,7 +23,7 @@ class BotClient(discord.Client):
 
 class Bot(object):
     def __init__(self):
-        self.auth = self.read_auth('auth.txt')
+        self.auth = auth.get_auth()
         self.help_text = self.read_help('help.txt')
         self.strings = self.read_strings('strings.txt')
         self.commands = [
@@ -38,10 +39,6 @@ class Bot(object):
 
     def run(self):
         self.client.run(self.auth)
-
-    def read_auth(self, path: str) -> str:
-        with open(path, mode='r') as file:
-            return file.readline().strip(' \n\r')
 
     def read_strings(self, path: str) -> dict:
         with open(path, mode='r') as file:
