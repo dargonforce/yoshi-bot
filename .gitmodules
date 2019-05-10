@@ -1,0 +1,3 @@
+[submodule "markopy"]
+	path = markopy
+	url = https://github.com/yoshi-club/markopy
