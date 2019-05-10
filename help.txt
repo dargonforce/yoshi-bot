@@ -1,8 +1,8 @@
 ```
 commands
-==========================================
->help....................display this text
->sophistry...............generate nonsense
+==========================================================================
+>help....................................................display this text
+>sophistry.....procedurally generated philosophy, just like the real thing
 
 I also respond to certain words or phrases
 ```
