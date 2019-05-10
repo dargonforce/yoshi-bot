@@ -16,13 +16,17 @@ with open('strings.txt', 'r') as file:
     for line in  file:
         key, value = line.partition('=')[::2]
         strings[key.strip()] = value
+with open('help.txt', 'r') as file:
+    help_text = file.read()
+
 commands = [
     (Contains('yoshi'), SendResponse(strings['yoshi'])),
     (Contains('uwu'), SendResponse(strings['uwu'])),
     (And(StartsWith('>tfw'), Not(StartsWith('>tfwnogf'))), SendResponse(strings['tfw'])),
     (StartsWith('>tfwnogf'), SendResponse(strings['tfwnogf'])),
     (Equals('turn that poop'), SendResponse('into wine')),
-    (Equals('>sophistry'), MarkovGenerator('republic.txt'))
+    (Equals('>sophistry'), MarkovGenerator('republic.txt')),
+    (Equals('>help'), SendResponse(help_text))
 ]
 
 class BotClient(discord.Client):
