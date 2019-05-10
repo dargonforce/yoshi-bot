@@ -36,7 +36,11 @@ class BotClient(discord.Client):
         if message.author != self.user:
             for command in commands:
                 if command[0](message.content):
-                    await command[1](message)
+                    try:
+                        await command[1](message)
+                    except ex:
+                        print(str(ex))
+
 
 def start_client():
     client = BotClient()
