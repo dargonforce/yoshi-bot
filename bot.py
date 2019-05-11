@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 import discord
 import auth
-import markopy.marko
-from typing import Callable, Awaitable
 from functor import Contains, StartsWith, And, Not, Equals
 from action import SendResponse, MarkovGenerator
 
