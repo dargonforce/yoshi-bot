@@ -6,20 +6,24 @@ from typing import Callable, Awaitable
 from functor import Contains, StartsWith, And, Not, Equals
 from action import SendResponse, MarkovGenerator
 
+
 class BotClient(discord.Client):
     def __init__(self, commands):
         discord.Client.__init__(self)
         self.commands = commands
+
     async def on_ready(self):
         print('Logged on as', self.user)
+
     async def on_message(self, message):
         if message.author != self.user:
             for command in self.commands:
                 if command[0](message.content):
                     try:
                         await command[1](message)
-                    except ex:
+                    except Exception as ex:
                         print(str(ex))
+
 
 class Bot(object):
     def __init__(self):
@@ -40,7 +44,8 @@ class Bot(object):
     def run(self):
         self.client.run(self.auth)
 
-    def read_strings(self, path: str) -> dict:
+    @staticmethod
+    def read_strings(path: str) -> dict:
         with open(path, mode='r') as file:
             strings = {}
             for line in  file:
@@ -48,14 +53,12 @@ class Bot(object):
                 strings[key.strip()] = value
             return strings
 
-    def read_help(self, path: str) -> str:
+    @staticmethod
+    def read_help(path: str) -> str:
         with open('help.txt', 'r') as file:
             return file.read()
 
 
-def main():
+if __name__ == '__main__':
     bot = Bot()
     bot.run()
-
-if __name__ == '__main__':
-    main()

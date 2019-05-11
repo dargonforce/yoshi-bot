@@ -4,6 +4,7 @@ from pathlib import Path
 file_path = 'auth.txt'
 env_var = 'DISCORD_AUTH_KEY'
 
+
 def get_auth():
     if Path(file_path).exists():
         with open(file_path, 'r') as file:
@@ -13,6 +14,7 @@ def get_auth():
             return os.environ[env_var]
         except KeyError:
             return None
+
 
 if __name__ == '__main__':
     print(get_auth())
