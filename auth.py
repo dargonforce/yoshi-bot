@@ -9,4 +9,10 @@ def get_auth():
         with open(file_path, 'r') as file:
             return file.read().strip('\n\r ')
     else:
-        return os.environ[env_var]
+        try:
+            return os.environ[env_var]
+        except KeyError:
+            return None
+
+if __name__ == '__main__':
+    print(get_auth())
