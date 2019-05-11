@@ -6,7 +6,6 @@ from functools import partial
 from commands import commands
 
 
-
 class BotClient(discord.Client):
     def __init__(self, message_callback):
         discord.Client.__init__(self)
