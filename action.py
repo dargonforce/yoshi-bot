@@ -1,6 +1,6 @@
+import random
 import discord
 import markopy.marko as marko
-import random
 
 
 class Action(object):
@@ -53,6 +53,16 @@ class MarkovGenerator(Action):
             line = line + ' ' + word
         line += '.'
         return line
+
+
+class PrintHelpText(Action):
+    def __init__(self):
+        Action.__init__(self)
+        with open('help.txt') as file:
+            self.help_text = file.read()
+
+    async def invoke(self, message: discord.Message):
+        await message.channel.send(self.help_text)
 
 
 if __name__ == '__main__':

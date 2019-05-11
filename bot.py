@@ -1,60 +1,41 @@
 #!/usr/bin/env python3
 import discord
 import auth
-from functor import Contains, StartsWith, And, Not, Equals
-from action import SendResponse, MarkovGenerator
+from action import Action
+from functools import partial
+from commands import commands
+
 
 
 class BotClient(discord.Client):
-    def __init__(self, commands):
+    def __init__(self, message_callback):
         discord.Client.__init__(self)
-        self.commands = commands
+        self.message_callback = message_callback
 
     async def on_ready(self):
         print('Logged on as', self.user)
 
     async def on_message(self, message):
         if message.author != self.user:
-            for command in self.commands:
-                if command[0](message.content):
-                    try:
-                        await command[1](message)
-                    except Exception as ex:
-                        print(str(ex))
+            await self.message_callback(message)
 
 
 class Bot(object):
     def __init__(self):
         self.auth = auth.get_auth()
-        self.help_text = self.read_help('help.txt')
-        self.strings = self.read_strings('strings.txt')
-        self.commands = [
-            (Contains('yoshi'), SendResponse(self.strings['yoshi'])),
-            (Contains('uwu'), SendResponse(self.strings['uwu'])),
-            (And(StartsWith('>tfw'), Not(StartsWith('>tfwnogf'))), SendResponse(self.strings['tfw'])),
-            (StartsWith('>tfwnogf'), SendResponse(self.strings['tfwnogf'])),
-            (Equals('turn that poop'), SendResponse('into wine')),
-            (Equals('>sophistry'), MarkovGenerator('republic.txt')),
-            (Equals('>help'), SendResponse(self.help_text))
-        ]
-        self.client = BotClient(self.commands)
+        self.commands = commands
+        self.client = BotClient(partial(self.handle_message))
+
+    async def handle_message(self, message: discord.Message):
+        for command in self.commands:
+            if command[0](message.content):
+                try:
+                    await command[1].action(message)
+                except Exception as ex:
+                    print(str(ex))
 
     def run(self):
         self.client.run(self.auth)
-
-    @staticmethod
-    def read_strings(path: str) -> dict:
-        with open(path, mode='r') as file:
-            strings = {}
-            for line in  file:
-                key, value = line.partition('=')[::2]
-                strings[key.strip()] = value
-            return strings
-
-    @staticmethod
-    def read_help(path: str) -> str:
-        with open('help.txt', 'r') as file:
-            return file.read()
 
 
 if __name__ == '__main__':
